@@ -11,12 +11,12 @@ class SearchForm extends Component {
   handleSearchInput = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
-    const employeeSearch = this.props.userState.emps.filter((emp) => {
+    const emps = this.props.currentState.employee.filter((emp) => {
       return (
-        emp.name.first.toLowerCase() || emp.name.last.toLowerCase() || Date(emp.dob.date).toLocaleDateString()
+        emp.name.first.toLowerCase().includes(this.state.searchInput) || emp.name.last.toLowerCase().includes(this.state.searchInput) || Date(emp.dob.date).toLocaleDateString()
       );
     });
-    this.props.onSearch(employeeSearch);
+    this.props.onSearch(emps);
   };
 
   render() {
@@ -25,7 +25,7 @@ class SearchForm extends Component {
         <div className="form-group">
           <label htmlFor="search">Search Directory</label>
           <input
-            // value={this.search}
+            value={this.state.searchInput}
             onChange={this.handleSearchInput}
 
             type="text"
