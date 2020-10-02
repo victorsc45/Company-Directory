@@ -10,30 +10,45 @@ import API from "../utils/API";
 class Home extends Component {
   state = {
     employee: [],
-
+    value: '',
+    searchInput: '',
+    empFilter: [],
   };
   componentDidMount() {
     API.getRandomUsers().then((res) => {
       this.setState({ employee: res.data.results });
-
-
+      this.setState({ empFilter: res.data.results });
     }).catch((err) => console.log(err));
   }
+  handleSearchInput = (event) => {
+    const { value } = event.target;
+    this.setState({ searchInput: value });
+
+    const emps = this.state.employee.filter((emp) => {
+      console.log(emp.name.first.toLowerCase(), this.state.searchInput);
+      return (
+        emp.name.first.toLowerCase() === this.state.searchInput //|| emp.name.last.toLowerCase().includes(this.state.searchInput)
+      );
+    });
+    this.setState({ empFilter: emps });
+  };
+
   onUserInput = (emps) => {
     this.setState({ employee: emps });
   };
   render() {
+
     return (
       <div>
         <Hero backgroundImage="https://i.imgur.com/2j0QfWL.jpeg">
           <h1>COMPANY DIRECTORY</h1>
           <h2>Creative Brands Employee Directory</h2>
-          <SearchForm currentState={this.state} onSearch={this.onUserInput} />
+          <SearchForm handleSearchInput={this.handleSearchInput} />
         </Hero>
         <Container style={{ marginTop: 30 }}>
           <Row>
             <Col size="md-12">
-              <DataTable currentState={this.state} onSort={this.onUserInput} />
+              <DataTable currentState={this.state} onSortName={this.onUserInput} />
             </Col>
           </Row>
           <Row>

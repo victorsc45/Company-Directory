@@ -4,48 +4,94 @@ import React, { Component } from 'react';
 
 
 class DataTable extends Component {
+
     state = {
-        name: "",
-        dob: "",
+        ordered: true,
+        ascending: true,
+        sortedEmps: [],
+
     };
 
-
-
-
-
-    getSortName() {
-        const sortedEmps = this.props.currentState.emps;
-        sortedEmps.sort((a, b) => (
-
-            a.emp.name.last.toLowerCase() > b.emp.name.last.toLowerCase() ? 1 : -1
-
-        ));
-        if (!this.setState({ name: 'asc' })) {
-            this.setState({ name: 'desc' })
+    componentDidMount() {
+        if (this.state.sortedEmps.length < 1) {
+            this.setState({
+                sortedEmps: this.props.currentState.employee,
+            });
         }
-        else {
-            this.setState({ name: 'asc' });
-        };
-        this.props.onSort(sortedEmps);
-
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.currentState.employee !== prevProps.currentState.employee) {
+            this.setState({
+                sortedEmps: this.props.currentState.employee,
+            });
+        }
+    }
+
+    onSortName = () => {
+        let sortEmp = [];
+        if (this.props.currentState.employee.ordered) {
+            sortEmp = this.props.currentState.employee.sort((a, b) => {
+                let nameA = a.name.last.toLowerCase(),
+                    nameB = b.name.last.toLowerCase();
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+                return 0;
+            });
+        } else {
+            sortEmp = this.props.currentState.employee.sort((a, b) => {
+                let nameA = a.name.last.toLowerCase(),
+                    nameB = b.name.last.toLowerCase();
+                if (nameA > nameB) return -1;
+                if (nameA < nameB) return 1;
+                return 0;
+            });
+        }
+        this.setState({
+            ordered: !this.props.currentState.employee.ordered,
+            sortedEmps: sortEmp,
+        });
+    };
+
+    onSortDOB = () => {
+        let sortEmp = [];
+
+        if (this.props.currentState.ascending) {
+            sortEmp = this.props.currentState.employee.sort((a, b) => {
+                let nameA = a.dob.date,
+                    nameB = b.dob.date;
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+                return 0;
+            });
+        }
+        if (!this.props.currentState.ascending) {
+            sortEmp = this.props.currentState.employee.sort((a, b) => {
+                let nameA = a.dob.date,
+                    nameB = b.dob.date;
+                if (nameA > nameB) return -1;
+                if (nameA < nameB) return 1;
+                return 0;
+            });
+        }
+        this.setState({
+            ascending: !this.props.currentState.employee.ascending,
+            sortedEmps: sortEmp,
+        });
+    };
 
     render() {
         return (
             <div>
-                <p>
-                    sort by name!
-            </p>
-                {/* {this.getSortName()} */}
+
                 <table striped bordered hover responsive>
                     <thead className="text-center">
-                        <tr onClick={this.tableHeaderClick}>
+                        <tr>
                             <th id="pic">Profile Picture</th>
-                            <th id="name">Name </th>
+                            <th id="name" onClick={this.onSortName} className="name">Name </th>
                             <th id="phone">Phone</th>
                             <th id="email">Email </th>
-                            <th id="dob">Date of Birth</th>
+                            <th id="dob" onClick={this.onSortDOB} className="dob">date of Birth</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,7 +99,7 @@ class DataTable extends Component {
                             return (
                                 <tr key={emp.id}>
                                     <td className="align-middle">
-                                        <img src={emp.picture.medium} alt={emp.name.last} />
+                                        <img src={emp.picture.large} alt={emp.name.last} />
                                     </td>
                                     <td className="align-middle">
                                         {emp.name.first} {emp.name.last}
