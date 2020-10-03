@@ -95,7 +95,7 @@ class DataTable extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.currentState.employee.map((emp) => {
+                        {this.props.currentState.empFilter.map((emp) => {
                             return (
                                 <tr key={emp.id}>
                                     <td className="align-middle">
