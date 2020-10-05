@@ -47,7 +47,6 @@ class Home extends Component {
       empFilter: filtered,
       activeSearch: false,
     });
-
     console.log({
       empFilter: filtered
     })
