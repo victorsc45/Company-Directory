@@ -9,11 +9,7 @@ class DataTable extends Component {
         ordered: true,
         currentSort: true,
         sortedEmps: [],
-
-
     };
-
-
     componentDidMount() {
         if (this.state.sortedEmps.length < 1) {
             this.setState({
