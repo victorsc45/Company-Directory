@@ -6,13 +6,13 @@ import Col from "../components/Col";
 import SearchForm from "../components/SearchForm";
 import DataTable from "../components/DataTable";
 import API from "../utils/API";
-
+import Footer from "../components/Footer";
 
 class Home extends Component {
   state = {
     employee: [],
     value: '',
-    employeeObject: {},
+    activeSearch: true,
     searchInput: '',
     filtered: '',
     empFilter: [],
@@ -20,12 +20,16 @@ class Home extends Component {
   componentDidMount() {
     API.getRandomUsers().then((res) => {
       this.setState({ employee: res.data.results });
-      this.setState({ empFilter: res.data.results })
+      this.setState({ empFilter: res.data.results });
     }).catch((err) => console.log(err));
   }
   handleSearchInput = (event) => {
     let { value } = event.target;
-    this.setState({ searchInput: value });
+    this.setState({
+      empFilter: [],
+      searchInput: '',
+      activeSearch: true,
+    })
     console.log({ searchInput: value })
     let filtered = this.state.employee.filter((emp) => {
       return (
@@ -37,16 +41,18 @@ class Home extends Component {
           .includes(this.state.searchInput.toLowerCase())
       );
     });
-    console.log(filtered)
-    this.setState({ empFilter: filtered });
-    console.log({ empFilter: filtered })
 
-  };
+    this.setState({
+      searchInput: value,
+      empFilter: filtered,
+      activeSearch: false,
+    });
 
-  onUserInput = (emps) => {
-    this.setState({ employee: emps });
+    console.log({
+      empFilter: filtered
+    })
 
-  };
+  }
   render() {
 
     return (
@@ -55,15 +61,17 @@ class Home extends Component {
           <h1>COMPANY DIRECTORY</h1>
           <h2>Creative Brands Employee Directory</h2>
           <SearchForm handleSearchInput={this.handleSearchInput} />
+
         </Hero>
         <Container style={{ marginTop: 30 }}>
           <Row>
             <Col size="md-12">
-              <DataTable currentState={this.state} onSortName={this.onUserInput} />
+              <DataTable currentState={this.state} />
             </Col>
           </Row>
         </Container>
-      </div>
+        <Footer />
+      </div >
     );
   }
 };

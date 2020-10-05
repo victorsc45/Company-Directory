@@ -12,7 +12,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
-        Pupster
+        Creative Brands Technology
       </Link>
       <div>
         <ul className="navbar-nav">
@@ -25,7 +25,7 @@ function Navbar() {
                   : "nav-link"
               }
             >
-              Home
+              Directory
             </Link>
           </li>
 

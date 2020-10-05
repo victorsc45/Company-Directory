@@ -11,7 +11,7 @@ class DataTable extends Component {
         sortedEmps: [],
     };
     componentDidMount() {
-        if (this.state.sortedEmps.length < 1) {
+        if (this.props.currentState.employee.length < 1) {
             this.setState({
                 sortedEmps: this.props.currentState.employee,
             });
@@ -19,12 +19,13 @@ class DataTable extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.currentState.employee !== prevProps.currentState.employee) {
+        if (this.props.currentState.empFilter !== prevProps.currentState.empFilter) {
             this.setState({
-                sortedEmps: this.props.currentState.employee,
+                sortedEmps: this.props.currentState.empFilter,
             });
         }
     }
+
 
 
     onSortName = () => {
@@ -59,7 +60,38 @@ class DataTable extends Component {
 
 
     };
+    onSortPhone = () => {
+        let sortEmp = [];
 
+        if (!this.state.currentSort) {
+            sortEmp = this.props.currentState.employee.sort((a, b) => {
+                let nameA = a.phone,
+                    nameB = b.phone;
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+                return 0;
+            });
+            this.setState({
+                currentSort: !this.props.currentState.currentSort,
+                sortedEmps: sortEmp,
+            });
+        }
+        else if (this.state.currentSort) {
+            sortEmp = this.props.currentState.employee.sort((a, b) => {
+                let nameA = a.phone,
+                    nameB = b.phone;
+                if (nameA > nameB) return -1;
+                if (nameA < nameB) return 1;
+                return 0;
+            });
+            this.setState({
+                currentSort: this.props.currentState.currentSort,
+                sortedEmps: sortEmp,
+            });
+
+        }
+
+    };
     onSortDOB = () => {
         let sortEmp = [];
 
@@ -101,10 +133,10 @@ class DataTable extends Component {
                 <Table striped bordered hover responsive="sm">
                     <thead className="text-center">
                         <tr>
-                            <th id="pic">Profile Picture</th>
+                            <th id="pic" onClick={this.onSortName} className="pic">Profile Picture</th>
                             <th id="name" onClick={this.onSortName} className="name">Name</th>
-                            <th id="phone">Phone</th>
-                            <th id="email">Email </th>
+                            <th id="phone" onClick={this.onSortPhone} className="phone" >Phone</th>
+                            <th id="email" onClick={this.onSortName} className="email">Email</th>
                             <th id="dob" onClick={this.onSortDOB} className="dob">date of Birth</th>
                         </tr>
                     </thead>
@@ -120,7 +152,7 @@ class DataTable extends Component {
                                 </tr>
                             );
                         }
-                        )};</tbody>
+                        )}</tbody>
                 </Table>
 
             </div>
