@@ -9,7 +9,7 @@ function Navbar() {
     // nav brand name of page
     <nav className="navbar navbar-expand-lg">
       <Link className="navbar-brand" to="/">
-        Creative Brands Technology
+        Select here for Company Directory
       </Link>
       <div>
         <ul className="navbar-nav">
