@@ -9,22 +9,35 @@ class DataTable extends Component {
         ordered: true,
         currentSort: true,
         sortedEmps: [],
+        onSort: '',
+        empFilter: [],
     };
+    // componentDidMount() {
+    //     if (this.props.currentState.employee) {
+    //         this.setState({
+    //             empFilter: this.props.currentState.employee,
+    //         });
+    //         console.log("didmount", this.props.currentState.employee.length)
+    //     }
+    // }
     componentDidMount() {
-        if (this.props.currentState.employee.length < 1) {
+        if (this.props.currentState.employee.length < 0) {
             this.setState({
                 sortedEmps: this.props.currentState.employee,
             });
+            console.log("mount", this.props.currentState.employee)
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.currentState.empFilter !== prevProps.currentState.empFilter) {
+        if (this.props.currentState.employee !== prevProps.currentState.employee) {
             this.setState({
-                sortedEmps: this.props.currentState.empFilter,
+                sortedEmps: this.props.currentState.employee,
             });
+            console.log("update", this.props.currentState.employee)
         }
     }
+
 
 
 
@@ -42,6 +55,7 @@ class DataTable extends Component {
                 ordered: !this.props.currentState.ordered,
                 sortedEmps: sortEmp,
             });
+            console.log("name1", sortEmp)
         }
         else if (this.state.ordered) {
             sortEmp = this.props.currentState.employee.sort((a, b) => {
@@ -56,11 +70,13 @@ class DataTable extends Component {
                 ordered: this.props.currentState.ordered,
                 sortedEmps: sortEmp,
             });
+            console.log("name2", sortEmp)
         }
 
 
     };
     onSortPhone = () => {
+
         let sortEmp = [];
 
         if (!this.state.currentSort) {
@@ -75,6 +91,7 @@ class DataTable extends Component {
                 currentSort: !this.props.currentState.currentSort,
                 sortedEmps: sortEmp,
             });
+            console.log("phone1", sortEmp)
         }
         else if (this.state.currentSort) {
             sortEmp = this.props.currentState.employee.sort((a, b) => {
@@ -88,7 +105,7 @@ class DataTable extends Component {
                 currentSort: this.props.currentState.currentSort,
                 sortedEmps: sortEmp,
             });
-
+            console.log("phone2", sortEmp)
         }
 
     };
@@ -107,6 +124,7 @@ class DataTable extends Component {
                 currentSort: !this.props.currentState.currentSort,
                 sortedEmps: sortEmp,
             });
+            console.log("dob1", sortEmp)
         }
         else if (this.state.currentSort) {
             sortEmp = this.props.currentState.employee.sort((a, b) => {
@@ -120,7 +138,7 @@ class DataTable extends Component {
                 currentSort: this.props.currentState.currentSort,
                 sortedEmps: sortEmp,
             });
-
+            console.log("dob2", sortEmp)
         }
 
     };

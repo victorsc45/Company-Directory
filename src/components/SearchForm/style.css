@@ -1,8 +1,18 @@
 form.search {
-  overflow: auto;
-  margin-bottom: 10px;
+ width: 380px;
+ height: 60px;
+ border-color: #4aaaa4;
+ border-width: 3px;
+ align-self: center;
+ font-size: small;
 }
-
+label {
+  font-size: 20px;
+  
+  color: whitesmoke;
+ 
+  margin-left: 18px;
+}
 form.search button[type="submit"] {
   float: right;
   margin-top: 10px;

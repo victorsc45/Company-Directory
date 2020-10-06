@@ -16,7 +16,7 @@ const SearchForm = (props) => {
           value={props.searchInput}
           onChange={props.handleSearchInput}
           className="form-control"
-          placeholder="Search name or Date of Birth"
+          placeholder="Search Name, Year of Birth or Month"
           id="searchform"
         />
       </div>

@@ -19,39 +19,38 @@ class Home extends Component {
   };
   componentDidMount() {
     API.getRandomUsers().then((res) => {
+      console.log(res.data.results.length)
       this.setState({ employee: res.data.results });
       this.setState({ empFilter: res.data.results });
     }).catch((err) => console.log(err));
   }
   handleSearchInput = (event) => {
+
+
     let { value } = event.target;
-    this.setState({
-      empFilter: [],
-      searchInput: '',
-      activeSearch: true,
-    })
-    console.log({ searchInput: value })
     let filtered = this.state.employee.filter((emp) => {
       return (
         emp.name.first
           .toLowerCase()
-          .includes(this.state.searchInput.toLowerCase()) ||
+          .includes(value.toLowerCase()) ||
         emp.name.last
           .toLowerCase()
-          .includes(this.state.searchInput.toLowerCase())
+          .includes(value.toLowerCase()) || emp.dob.date.includes(value)
       );
     });
 
     this.setState({
-      searchInput: value,
+
       empFilter: filtered,
-      activeSearch: false,
+
     });
     console.log({
       empFilter: filtered
     })
 
   }
+
+
   render() {
 
     return (
@@ -60,9 +59,9 @@ class Home extends Component {
           <h1>COMPANY DIRECTORY</h1>
           <h2>Creative Brands Employee Directory</h2>
           <SearchForm handleSearchInput={this.handleSearchInput} />
-
         </Hero>
         <Container style={{ marginTop: 30 }}>
+          <h5>Click the table headers to sort ascending and descending!</h5>
           <Row>
             <Col size="md-12">
               <DataTable currentState={this.state} />

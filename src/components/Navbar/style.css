@@ -1,3 +1,7 @@
 nav.navbar.navbar-default {
   margin-bottom: 0;
+  background-color: turquoise!important;
+}
+navbar-brand {
+  color: black!important;
 }
