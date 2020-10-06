@@ -7,16 +7,17 @@ import SearchForm from "../components/SearchForm";
 import DataTable from "../components/DataTable";
 import API from "../utils/API";
 import Footer from "../components/Footer";
-
+// class home component for routing and main components
 class Home extends Component {
+  // declare state for react items
   state = {
     employee: [],
     value: '',
-    activeSearch: true,
     searchInput: '',
     filtered: '',
     empFilter: [],
   };
+  // mount api from axios set state for data set
   componentDidMount() {
     API.getRandomUsers().then((res) => {
       console.log(res.data.results.length)
@@ -24,11 +25,13 @@ class Home extends Component {
       this.setState({ empFilter: res.data.results });
     }).catch((err) => console.log(err));
   }
+  // handle the users search input based on each input of search form
   handleSearchInput = (event) => {
-
-
+    // set value for each input as target
     let { value } = event.target;
+    // filter api set state of employee 
     let filtered = this.state.employee.filter((emp) => {
+      // return the first name, last name letters as they match input field and match numbers of input for dob
       return (
         emp.name.first
           .toLowerCase()
@@ -38,17 +41,12 @@ class Home extends Component {
           .includes(value.toLowerCase()) || emp.dob.date.includes(value)
       );
     });
-
-    this.setState({
-
-      empFilter: filtered,
-
-    });
-    console.log({
-      empFilter: filtered
-    })
-
+    // set state of the resulting array to empfilter
+    this.setState({ empFilter: filtered });
+    console.log({ empFilter: filtered })
   }
+  // render the Home components Hero, SearchForm, Container, Row, Col, DataTable, Footer
+  // handle the search input in search form and present current state custom props to data table
   render() {
 
     return (

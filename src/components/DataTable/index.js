@@ -1,10 +1,10 @@
+// import react and bootstrap for table components
 import React, { Component } from 'react';
-
 import { Table, Image } from 'react-bootstrap';
 
-
+// class for data table component
 class DataTable extends Component {
-
+    // declaration of react variable items
     state = {
         ordered: true,
         currentSort: true,
@@ -12,142 +12,128 @@ class DataTable extends Component {
         onSort: '',
         empFilter: [],
     };
-    // componentDidMount() {
-    //     if (this.props.currentState.employee) {
-    //         this.setState({
-    //             empFilter: this.props.currentState.employee,
-    //         });
-    //         console.log("didmount", this.props.currentState.employee.length)
-    //     }
-    // }
-    componentDidMount() {
-        if (this.props.currentState.employee.length < 0) {
-            this.setState({
-                sortedEmps: this.props.currentState.employee,
-            });
-            console.log("mount", this.props.currentState.employee)
-        }
-    }
-
+    // component update on previous props change in employee
     componentDidUpdate(prevProps) {
-        if (this.props.currentState.employee !== prevProps.currentState.employee) {
+        if (this.props.currentState.empFilter !== prevProps.currentState.empFilter) {
             this.setState({
-                sortedEmps: this.props.currentState.employee,
+                empFilter: this.props.currentState.empFilter,
             });
-            console.log("update", this.props.currentState.employee)
+            console.log("update", this.props.currentState.empFilter)
         }
     }
-
-
-
-
+    // sort function for name based on first and last from employee
     onSortName = () => {
         let sortEmp = [];
         if (!this.state.ordered) {
-            sortEmp = this.props.currentState.employee.sort((a, b) => {
+            sortEmp = this.props.currentState.empFilter.sort((a, b) => {
                 let nameA = a.name.last.toLowerCase(), nameB = b.name.last.toLowerCase();
                 if (nameA < nameB) return -1;
                 if (nameA > nameB) return 1;
                 return 0;
             });
-
+            // set state on ordered to false so that sort will toggle truthy or falsey
             this.setState({
                 ordered: !this.props.currentState.ordered,
-                sortedEmps: sortEmp,
+                sortedEmps: this.props.currentState.sortEmp,
             });
-            console.log("name1", sortEmp)
+            console.log("name1", { sortedEmps: sortEmp })
         }
         else if (this.state.ordered) {
-            sortEmp = this.props.currentState.employee.sort((a, b) => {
+            sortEmp = this.props.currentState.empFilter.sort((a, b) => {
                 let nameA = a.name.last.toLowerCase(),
                     nameB = b.name.last.toLowerCase();
                 if (nameA > nameB) return -1;
                 if (nameA < nameB) return 1;
                 return 0;
             });
-
+            // set state on ordered to true so that sort will toggle truthy or falsey
             this.setState({
                 ordered: this.props.currentState.ordered,
-                sortedEmps: sortEmp,
+                sortedEmps: this.props.currentState.sortEmp,
             });
-            console.log("name2", sortEmp)
+            console.log("name2", { sortedEmps: sortEmp })
         }
-
-
     };
+    // sort table column phone by numeric order
     onSortPhone = () => {
 
         let sortEmp = [];
 
         if (!this.state.currentSort) {
-            sortEmp = this.props.currentState.employee.sort((a, b) => {
+            sortEmp = this.props.currentState.empFilter.sort((a, b) => {
                 let nameA = a.phone,
                     nameB = b.phone;
                 if (nameA < nameB) return -1;
                 if (nameA > nameB) return 1;
                 return 0;
             });
+            // set state on current sort to false so that sort will toggle truthy or false
             this.setState({
                 currentSort: !this.props.currentState.currentSort,
-                sortedEmps: sortEmp,
+                sortedEmps: this.props.currentState.sortEmp,
             });
             console.log("phone1", sortEmp)
         }
         else if (this.state.currentSort) {
-            sortEmp = this.props.currentState.employee.sort((a, b) => {
+            sortEmp = this.props.currentState.empFilter.sort((a, b) => {
                 let nameA = a.phone,
                     nameB = b.phone;
                 if (nameA > nameB) return -1;
                 if (nameA < nameB) return 1;
                 return 0;
             });
+            // set state on current sort to true so that sort will toggle truthy or false
             this.setState({
                 currentSort: this.props.currentState.currentSort,
-                sortedEmps: sortEmp,
+                sortedEmps: this.props.currentState.sortEmp,
             });
             console.log("phone2", sortEmp)
         }
 
     };
+    // sort date of birth numerically by input 
     onSortDOB = () => {
         let sortEmp = [];
-
         if (!this.state.currentSort) {
-            sortEmp = this.props.currentState.employee.sort((a, b) => {
+            sortEmp = this.props.currentState.empFilter.sort((a, b) => {
                 let nameA = a.dob.date,
                     nameB = b.dob.date;
                 if (nameA < nameB) return -1;
                 if (nameA > nameB) return 1;
                 return 0;
             });
+            // set state on current sort to false so that sort will toggle truthy or false
             this.setState({
                 currentSort: !this.props.currentState.currentSort,
-                sortedEmps: sortEmp,
+                sortedEmps: this.props.currentState.sortEmp,
             });
             console.log("dob1", sortEmp)
         }
         else if (this.state.currentSort) {
-            sortEmp = this.props.currentState.employee.sort((a, b) => {
+            sortEmp = this.props.currentState.empFilter.sort((a, b) => {
                 let nameA = a.dob.date,
                     nameB = b.dob.date;
                 if (nameA > nameB) return -1;
                 if (nameA < nameB) return 1;
                 return 0;
             });
+            // set state on current sort to true so that sort will toggle truthy or false
             this.setState({
                 currentSort: this.props.currentState.currentSort,
-                sortedEmps: sortEmp,
+                sortedEmps: this.props.currentState.sortEmp,
             });
             console.log("dob2", sortEmp)
         }
 
     };
-
+    // render the table for the DataTable component by mapping over empFiltered data 
+    // table style striped and hover responsive
+    // on click method calls each sort function as user clicks table header
+    // DataTable component used on home.js
     render() {
 
         return (
             <div>
-
                 <Table striped bordered hover responsive="sm">
                     <thead className="text-center">
                         <tr>

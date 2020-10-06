@@ -1,12 +1,10 @@
 import React from "react";
 import "./style.css";
+// import react and style for search form
 
-
-
+// props search form for search input and handle search input function
 const SearchForm = (props) => {
-
-
-
+  // returning props to home page for search function
   return (
     <form className="search">
       <div className="form-group">
